@@ -1,0 +1,144 @@
+<html>
+<head>
+<style type="text/css">
+.ttt td {
+	width: 100px;
+	height: 100px;
+	text-align: center;
+}
+.winner {
+	color: green;
+	font-size: 22px;
+}
+.overlay {
+	position: absolute;
+	float: left;
+	width: 305px;
+	height: 305px;
+	display: none;
+}
+</style>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	var i = 0;
+	var cross = "X";
+	var zero = "0";
+	
+	$('table.ttt td').each(function() {
+		$(this).on('click', function() {
+			if($(this).is(':empty')) {
+				if(i % 2 == 0) {
+					$(this).html(cross);
+					check($(this).index() + 1);
+				} else {
+					$(this).html(zero);
+					check($(this).index() + 1);
+				}
+				i++;
+			}
+		});
+	});
+		
+	function check(index) {
+		$('table.ttt tr').each(function(rowIndex) {
+			var c = 1;
+			$(this).children('td').each(function(columnIndex) {
+				if(!$(this).is(':empty') && ($(this).parent().find('td:not(:empty)').length == 3 || $(this).closest('table').find('tr td:nth-child(' + index + ')').length == 3 ) ) {
+					if($(this).parent().find('td:not(:empty)').text() == "XXX" || $(this).parent().find('td:not(:empty)').text() == "000") {
+						$(this).parent().find('td:not(:empty)').css('background', '#FF0');
+						resetGame($(this));
+					}
+					else if($(this).closest('table').find("tr td:nth-child(" + index + ")").text() == "XXX" || $(this).closest('table').find("tr td:nth-child(" + index + ")").text() == "000") {
+						$(this).closest('table').find("tr td:nth-child(" + index + ")").css('background', '#FF0');
+						resetGame($(this));
+					}
+					else if($(this).closest('table').find("tr:nth-child(" + (rowIndex + 1) + ") td:nth-child(" + (rowIndex + 1) + ")").text() + $(this).closest('table').find("tr:nth-child(" + (rowIndex + 2) + ") td:nth-child(" + (rowIndex + 2) + ")").text() + $(this).closest('table').find("tr:nth-child(" + (rowIndex + 3) + ") td:nth-child(" + (rowIndex + 3) + ")").text() == "XXX" ||  $(this).closest('table').find("tr:nth-child(" + (rowIndex + 1) + ") td:nth-child(" + (rowIndex + 1) + ")").text() + $(this).closest('table').find("tr:nth-child(" + (rowIndex + 2) + ") td:nth-child(" + (rowIndex + 2) + ")").text() + $(this).closest('table').find("tr:nth-child(" + (rowIndex + 3) + ") td:nth-child(" + (rowIndex + 3) + ")").text() == "000" ) {			
+						$(this).closest('table').find("tr:nth-child(" + (rowIndex + 1) + ") td:nth-child(" + (rowIndex + 1) + ")").css('background', '#FF0');
+						$(this).closest('table').find("tr:nth-child(" + (rowIndex + 2) + ") td:nth-child(" + (rowIndex + 2) + ")").css('background', '#FF0');
+						$(this).closest('table').find("tr:nth-child(" + (rowIndex + 3) + ") td:nth-child(" + (rowIndex + 3) + ")").css('background', '#FF0');
+						resetGame($(this));
+					}
+					else if(  $(this).closest('table').find("tr:nth-child(" + (rowIndex + 1) + ") td:nth-child(" + (rowIndex + 3) + ")").text() + $(this).closest('table').find("tr:nth-child(" + (rowIndex + 2) + ") td:nth-child(" + (rowIndex + 2) + ")").text() + $(this).closest('table').find("tr:nth-child(" + (rowIndex + 3) + ") td:nth-child(" + (rowIndex + 1) + ")").text() == "XXX" ||  $(this).closest('table').find("tr:nth-child(" + (rowIndex + 1) + ") td:nth-child(" + (rowIndex + 1) + ")").text() + $(this).closest('table').find("tr:nth-child(" + (rowIndex + 2) + ") td:nth-child(" + (rowIndex + 2) + ")").text() + $(this).closest('table').find("tr:nth-child(" + (rowIndex + 3) + ") td:nth-child(" + (rowIndex + 3) + ")").text() == "000" ) {			
+						$(this).closest('table').find("tr:nth-child(" + (rowIndex + 1) + ") td:nth-child(" + (rowIndex + 3) + ")").css('background', '#FF0');
+						$(this).closest('table').find("tr:nth-child(" + (rowIndex + 2) + ") td:nth-child(" + (rowIndex + 2) + ")").css('background', '#FF0');
+						$(this).closest('table').find("tr:nth-child(" + (rowIndex + 3) + ") td:nth-child(" + (rowIndex + 1) + ")").css('background', '#FF0');
+						resetGame($(this));
+					}
+					
+					
+					// ltr diagonal XXX
+					/*else if($(this).closest('table').find("tr:nth-child(" + (rowIndex + 1) + ") td:nth-child(" + (rowIndex + 1) + ")").text() + $(this).closest('table').find("tr:nth-child(" + (rowIndex + 2) + ") td:nth-child(" + (rowIndex + 2) + ")").text() + $(this).closest('table').find("tr:nth-child(" + (rowIndex + 3) + ") td:nth-child(" + (rowIndex + 3) + ")").text() == "XXX" ) {			
+						$(this).closest('table').find("tr:nth-child(" + index + ") td:nth-child(" + index + ")").css('background', '#FF0');
+						$(this).closest('table').find("tr:nth-child(" + (index + 1) + ") td:nth-child(" + (index + 1) + ")").css('background', '#FF0');
+						$(this).closest('table').find("tr:nth-child(" + (index + 2) + ") td:nth-child(" + (index + 2) + ")").css('background', '#FF0');
+						resetGame($(this));
+					}*/
+					// ltr diagonal 000
+					/*else if($(this).closest('table').find("tr:nth-child(" + (rowIndex + 1) + ") td:nth-child(" + (rowIndex + 1) + ")").text() + $(this).closest('table').find("tr:nth-child(" + (rowIndex + 2) + ") td:nth-child(" + (rowIndex + 2) + ")").text() + $(this).closest('table').find("tr:nth-child(" + (rowIndex + 3) + ") td:nth-child(" + (rowIndex + 3) + ")").text() == "000" ) {			
+						$(this).closest('table').find("tr:nth-child(" + index + ") td:nth-child(" + index + ")").css('background', '#FF0');
+						$(this).closest('table').find("tr:nth-child(" + (index + 1) + ") td:nth-child(" + (index + 1) + ")").css('background', '#FF0');
+						$(this).closest('table').find("tr:nth-child(" + (index + 2) + ") td:nth-child(" + (index + 2) + ")").css('background', '#FF0');
+						resetGame($(this));
+					}*/
+					// rtl diagonal XXX
+					/*else if($(this).closest('table').find("tr:nth-child(" + (rowIndex + 1) + ") td:nth-child(" + (rowIndex + 3) + ")").text() + $(this).closest('table').find("tr:nth-child(" + (rowIndex + 2) + ") td:nth-child(" + (rowIndex + 2) + ")").text() + $(this).closest('table').find("tr:nth-child(" + (rowIndex + 3) + ") td:nth-child(" + (rowIndex + 1) + ")").text() == "XXX" ) {			
+						$(this).closest('table').find("tr:nth-child(" + index + ") td:nth-child(" + index + ")").css('background', '#FF0');
+						$(this).closest('table').find("tr:nth-child(" + (index + 1) + ") td:nth-child(" + (index + 1) + ")").css('background', '#FF0');
+						$(this).closest('table').find("tr:nth-child(" + (index + 2) + ") td:nth-child(" + (index + 2) + ")").css('background', '#FF0');
+						resetGame($(this));
+					}*/
+					// rtl diagonal 000
+					/*else if($(this).closest('table').find("tr:nth-child(" + (rowIndex + 1) + ") td:nth-child(" + (rowIndex + 3) + ")").text() + $(this).closest('table').find("tr:nth-child(" + (rowIndex + 2) + ") td:nth-child(" + (rowIndex + 2) + ")").text() + $(this).closest('table').find("tr:nth-child(" + (rowIndex + 3) + ") td:nth-child(" + (rowIndex + 1) + ")").text() == "000" ) {			
+						$(this).closest('table').find("tr:nth-child(" + index + ") td:nth-child(" + index + ")").css('background', '#FF0');
+						$(this).closest('table').find("tr:nth-child(" + (index + 1) + ") td:nth-child(" + (index + 1) + ")").css('background', '#FF0');
+						$(this).closest('table').find("tr:nth-child(" + (index + 2) + ") td:nth-child(" + (index + 2) + ")").css('background', '#FF0');
+						resetGame($(this));
+					}*/
+				}
+			});
+			c++;
+		});
+		
+		/*if ( $(this).closest('table').find("tr:nth-child(" + (rowIndex + 1) + ") td:nth-child(" + (rowIndex + 1) + ")").text() == $(this).closest('table').find("tr:nth-child(" + (rowIndex + 2) + ") td:nth-child(" + (rowIndex + 2) + ")").text() == $(this).closest('table').find("tr:nth-child(" + (rowIndex + 3) + ") td:nth-child(" + (rowIndex + 3) + ")").text() ) {
+			
+		} */
+		
+	}
+	
+	function resetGame(elem) {
+		$('.winner').html('Tic Tac Toe').append(" <span style='color: #F00;'> --\> Game over</span>");
+		$('#game .overlay').show();
+	}
+});
+</script>
+<!-- Tic-tac-toe game -->
+</head>
+<body>
+<div class="winner">Tic Tac Toe</div>
+<div id="game">
+<div class="overlay"></div>
+<table class="ttt" border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
+	<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+	</tr>
+	<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+	</tr>
+	<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+	</tr>
+</table>
+<br/>
+<button type="button" onclick="javascript:location.reload();">Reset game</button>
+</div>
+</body>
+</html>
